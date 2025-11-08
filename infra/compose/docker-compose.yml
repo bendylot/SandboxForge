@@ -1,0 +1,62 @@
+name: sandboxforge-dev
+services:
+  postgres:
+    image: postgres:16-alpine
+    ports: ["${POSTGRES_PORT:-5432}:5432"]
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app_password}
+      POSTGRES_DB: ${POSTGRES_DB:-sandboxforge}
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports: ["${REDIS_PORT:-6379}:6379"]
+    volumes: [ "redis-data:/data" ]
+
+  seq:
+    image: datalust/seq:latest
+    profiles: ["obs"]
+    ports: ["${SEQ_PORT:-5341}:80"]
+    environment:
+      ACCEPT_EULA: "Y"
+    volumes:
+      - seq-data:/data
+
+  # Пром/Графана по желанию, можно добавить позже
+  grafana:
+    image: grafana/grafana:latest
+    ports: ["${GRAFANA_PORT:-3001}:3000"]
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+  # Бэкенд – соберётся, когда появится папка apps/casino-api
+  # api:
+  #   build:
+  #     context: ../../apps/casino-api
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     # примеры, подставь реальные позже
+  #     CONNECTION_STR: "Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
+  #   ports: ["${API_HTTP_PORT:-8080}:8080"]
+  #   depends_on:
+  #     - postgres
+  #     - redis
+
+  # # Фронт – если будет Next.js в apps/web
+  # web:
+  #   build:
+  #     context: ../../apps/web
+  #     dockerfile: Dockerfile
+  #   ports: ["${WEB_HTTP_PORT:-3000}:3000"]
+  #   environment:
+  #     NEXT_PUBLIC_API_BASE: "http://localhost:${API_HTTP_PORT:-8080}"
+  #   depends_on:
+  #     - api
+
+volumes:
+  pg-data:
+  redis-data:
+  seq-data:
+  grafana-data:
