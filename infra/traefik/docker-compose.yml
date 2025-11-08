@@ -1,6 +1,3 @@
-# /opt/traefik/docker-compose.yml
-version: "3.9"
-
 networks:
   traefik-net: {}
 
@@ -8,32 +5,32 @@ services:
   traefik:
     image: traefik:v3.1
     container_name: traefik
+    restart: unless-stopped
+    ports:
+      - "80:80"        # web
+      - "443:443"      # websecure
+      - "8080:8080"    # dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ~/SandboxForge/infra/traefik/data/acme.json:/letsencrypt/acme.json
     command:
+      - --api.dashboard=true
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
-      - --api.insecure=true
+      # редирект http -> https
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      # ACME (http-challenge)
       - --certificatesresolvers.le.acme.email=you@example.com
       - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
       - --certificatesresolvers.le.acme.httpchallenge=true
       - --certificatesresolvers.le.acme.httpchallenge.entrypoint=web
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./data:/letsencrypt
-    networks: [traefik-net]
-    restart: unless-stopped
     labels:
-      traefik.enable: "true"
-      # HTTP -> HTTPS redirect для всех хостов
-      traefik.http.routers.http-catchall.rule: HostRegexp(`{host:.+}`)
-      traefik.http.routers.http-catchall.entrypoints: web
-      traefik.http.routers.http-catchall.middlewares: redirect-https
-      traefik.http.middlewares.redirect-https.redirectscheme.scheme: https
-      traefik.http.middlewares.redirect-https.redirectscheme.permanent: "true"
+      - traefik.enable=true
+      - traefik.http.routers.dashboard.rule=Host(`traefik.sandboxforge.tech`)
+      - traefik.http.routers.dashboard.service=api@internal
 
   api:
     image: containous/whoami
@@ -41,11 +38,15 @@ services:
     networks: [traefik-net]
     restart: unless-stopped
     labels:
-      traefik.enable: "true"
-      traefik.http.routers.api.rule: Host(`api.sandboxforge.tech`)
-      traefik.http.routers.api.entrypoints: websecure
-      traefik.http.routers.api.tls.certresolver: le
-      traefik.http.services.api.loadbalancer.server.port: "80"
+    - traefik.enable=true
+    - traefik.http.routers.api.rule=Host(`api.sandboxforge.tech`)
+    - traefik.http.routers.api.entrypoints=websecure
+    - traefik.http.routers.api.tls=true
+    - traefik.http.routers.api.tls.certresolver=le
+    # опционально: чтобы http тоже работал (для редиректа/челленджа)
+    - traefik.http.routers.api-plain.rule=Host(`api.sandboxforge.tech`)
+    - traefik.http.routers.api-plain.entrypoints=web
+
 
   casino:
     image: containous/whoami
