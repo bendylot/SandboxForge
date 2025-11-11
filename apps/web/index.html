@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SandboxForge — проекты Макса</title>
+
+  <!-- Open Graph / SEO basics -->
+  <meta name="description" content="Личная стартовая страница пет‑проекта SandboxForge: ссылки на бэкенд‑сервисы, Revit‑плагины, ML‑демо и инструменты." />
+  <meta property="og:title" content="SandboxForge — проекты Макса" />
+  <meta property="og:description" content="Личный хаб: .NET 9, Revit API, Docker/Traefik, PostgreSQL, Grafana, ML." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sandboxforge.tech" />
+  <meta property="og:image" content="/og.png" />
+  <meta name="theme-color" content="#0ea5e9" />
+  <link rel="icon" href="/favicon.ico" />
+
+  <!-- Minimal, fast, no frameworks -->
+  <style>
+    :root{
+      --bg: #0b0d12; /* deep dark */
+      --panel: #0f1219;
+      --text: #e8edf2;
+      --muted: #9aa4b2;
+      --brand: #0ea5e9; /* sky-500 */
+      --brand-2: #22d3ee; /* cyan-400 */
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --err: #ef4444;
+      --ring: rgba(14,165,233,.35);
+      --card: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --grid-gap: clamp(14px, 2vw, 20px);
+      --container: min(1200px, 92vw);
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f7fafc; --panel:#ffffff; --text:#0b1220; --muted:#5b6270;
+        --card: linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.02));
+        --shadow: 0 10px 25px rgba(17,24,39,.08);
+      }
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; background: radial-gradient(1000px 600px at 90% -10%, rgba(34,211,238,.08), transparent 60%), radial-gradient(800px 500px at -10% 20%, rgba(14,165,233,.10), transparent 50%), var(--bg); color:var(--text); font: 16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Inter, "SF Pro", Arial, sans-serif;}
+    a{color:inherit; text-decoration:none}
+    .container{width:var(--container); margin:0 auto;}
+
+    /* Header */
+    header{position:sticky; top:0; z-index:40; backdrop-filter: blur(8px); background: color-mix(in oklab, var(--bg) 82%, transparent); border-bottom: 1px solid color-mix(in oklab, var(--text) 8%, transparent);}
+    .nav{display:flex; align-items:center; justify-content:space-between; height:72px;}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.3px}
+    .logo{width:28px; height:28px; border-radius:8px; background: conic-gradient(from 180deg at 50% 50%, var(--brand), var(--brand-2), var(--brand)); box-shadow: inset 0 0 14px rgba(255,255,255,.25), 0 6px 20px rgba(14,165,233,.25)}
+    .nav a.btn{padding:10px 14px; border-radius:12px; border:1px solid color-mix(in oklab, var(--text) 10%, transparent); background: color-mix(in oklab, var(--panel) 75%, transparent); transition:.2s}
+    .nav a.btn:hover{transform: translateY(-1px); box-shadow: var(--shadow)}
+
+    /* Hero */
+    .hero{padding: clamp(36px, 7vw, 80px) 0 10px; display:grid; gap:18px}
+    .kicker{display:inline-flex; align-items:center; gap:8px; color:var(--muted); font-size:14px}
+    .kicker .dot{width:8px; height:8px; border-radius:50%; background: linear-gradient(90deg, var(--ok), var(--brand)); box-shadow: 0 0 14px var(--ok)}
+    h1{margin:0; font-size:clamp(28px, 4.2vw, 46px); line-height:1.1; letter-spacing:.2px}
+    .sub{max-width:850px; color:var(--muted); font-size: clamp(15px, 1.2vw, 18px)}
+    .badges{display:flex; flex-wrap:wrap; gap:10px; margin-top:8px}
+    .badge{font-size:12px; padding:7px 10px; border-radius:999px; border:1px solid color-mix(in oklab, var(--text) 8%, transparent); background: color-mix(in oklab, var(--panel) 75%, transparent)}
+
+    /* Grid */
+    .section{padding: 28px 0 60px}
+    .grid{display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: var(--grid-gap)}
+    .card{position:relative; overflow:hidden; border-radius: var(--radius); background: var(--card); border:1px solid color-mix(in oklab, var(--text) 10%, transparent); box-shadow: var(--shadow); transition: .18s transform ease, .25s box-shadow ease}
+    .card:hover{transform: translateY(-2px); box-shadow: 0 14px 40px rgba(14,165,233,.18)}
+    .card .body{padding:18px}
+    .eyebrow{font-size:12px; color:var(--muted); letter-spacing:.4px; text-transform:uppercase}
+    .title{margin:8px 0 6px; font-weight:700; font-size:18px}
+    .desc{color:var(--muted); font-size:14px}
+    .go{margin-top:14px; display:inline-flex; align-items:center; gap:8px; font-weight:600; color:var(--brand)}
+    .go svg{width:18px; height:18px;}
+
+    /* Footer */
+    footer{padding:32px 0 60px; color:var(--muted)}
+    .foot{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; border-top:1px solid color-mix(in oklab, var(--text) 10%, transparent); padding-top:18px}
+    .links{display:flex; gap:14px}
+    .links a{padding:8px 12px; border-radius:10px; border:1px dashed color-mix(in oklab, var(--text) 12%, transparent)}
+
+    /* Small utility */
+    .sr{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+  </style>
+
+  <!-- JSON-LD for richer previews -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Макс",
+    "url": "https://sandboxforge.tech",
+    "jobTitle": "C# Developer / Revit Plugins",
+    "sameAs": [
+      "https://github.com/softapro-dev",
+      "https://github.com/SOFTAPRO"
+    ]
+  }
+  </script>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand"><div class="logo" aria-hidden="true"></div><span>SandboxForge</span></div>
+      <nav class="links">
+        <a class="btn" href="#projects">Проекты</a>
+        <a class="btn" href="#tools">Инструменты</a>
+        <a class="btn" href="#contact">Контакты</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <span class="kicker">
+        <span class="dot" aria-hidden="true">
+        </span> 
+        <div id="lastUpdateRoomSync">Загрузка …</div>
+      </span>
+      <h1>My Projects</h1>
+      <div class="badges">
+        <div class="badge">.NET 9</div>
+        <div class="badge">ASP.NET Minimal API</div>
+        <div class="badge">Revit API</div>
+        <div class="badge">Docker • Traefik</div>
+        <div class="badge">PostgreSQL • Redis</div>
+        <div class="badge">Grafana • Prometheus</div>
+        <div class="badge">gRPC • REST</div>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <h2 class="sr">Проекты</h2>
+      <div class="grid">
+        <!-- BookMatch -->
+        <a class="card" href="#" target="_blank" rel="noopener">
+          <div class="body">
+            <div class="eyebrow">ML Demo</div>
+            <div class="title">BookMatch</div>
+            <p class="desc">Рекомендательная система на TF‑IDF и cosine similarity. Веб‑демо и API.</p>
+            <div class="badges" aria-label="stack">
+              <div class="badge">CI/CD</div>
+              <div class="badge">Let’s Encrypt</div>
+              <div class="badge">Health Checks</div>
+            </div>
+            <span class="go">Открыть описание <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg></span>
+          </div>
+        </a>
+        <!-- Casino (front demo) -->
+        <a class="card" href="https://casino.sandboxforge.tech" target="_blank" rel="noopener">
+          <div class="body">
+            <div class="eyebrow">Front‑end</div>
+            <div class="title">Sandbox «Casino»</div>
+            <p class="desc">UI‑песочница и тестовые мини‑игры для оттачивания фронта и WebSockets.</p>
+            <div class="badges" aria-label="stack">
+              <div class="badge">C#</div>
+              <div class="badge">Rust</div>
+              <div class="badge">Dota 2</div>
+            </div>
+            <span class="go">Открыть описание<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg></span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+  <footer id="contact" class="container">
+    <div class="foot">
+      <div>© <span id="year"></span> SandboxForge. Сделано на кофе и .NET.</div>
+      <div class="links">
+        <a href="https://github.com/bendylot" target="_blank" rel="noopener">GitHub: bendylot</a>
+        <a href="mailto:maksim.vinogradov.official@gmail.com">Почта</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+  <script>
+
+  async function fetchLastUpdate(owner, repo, targetElementId) {
+    const url = `https://api.github.com/repos/${owner}/${repo}`;
+    try {
+      const resp = await fetch(url);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const data = await resp.json();
+      const pushedAt = data.pushed_at;  // ISO строка
+      if (!pushedAt) throw new Error('pushed_at not found');
+      const d = new Date(pushedAt);
+      // форматируем, например: 11 ноября 2025 г.
+      const options = { year:'numeric', month:'long', day:'numeric' };
+      const str = d.toLocaleDateString('ru-RU', options);
+      document.getElementById(targetElementId).textContent = `Последнее обновление: ${str}`;
+    } catch(err) {
+      console.error('Error fetching last update:', err);
+      document.getElementById(targetElementId).textContent = 'Последнее обновление: —';
+    }
+  }
+
+  // Пример:  
+  fetchLastUpdate('bendylot','SandboxForge','lastUpdateRoomSync');
+</script>
+
+</body>
+</html>
+
