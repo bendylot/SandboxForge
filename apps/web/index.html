@@ -84,6 +84,24 @@
 
     /* Small utility */
     .sr{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+    .totalBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.totalBadges .badge {
+  display: inline-flex; /* вместо block */
+  align-items: center;
+  justify-content: center;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--text) 8%, transparent);
+  background: color-mix(in oklab, var(--panel) 75%, transparent);
+  font-size: 12px;
+}
+
   </style>
 
   <!-- JSON-LD for richer previews -->
@@ -95,8 +113,7 @@
     "url": "https://sandboxforge.tech",
     "jobTitle": "C# Developer / Revit Plugins",
     "sameAs": [
-      "https://github.com/softapro-dev",
-      "https://github.com/SOFTAPRO"
+      "https://github.com/bendylot",
     ]
   }
   </script>
@@ -107,7 +124,6 @@
       <div class="brand"><div class="logo" aria-hidden="true"></div><span>SandboxForge</span></div>
       <nav class="links">
         <a class="btn" href="#projects">Проекты</a>
-        <a class="btn" href="#tools">Инструменты</a>
         <a class="btn" href="#contact">Контакты</a>
       </nav>
     </div>
@@ -121,14 +137,7 @@
         <div id="lastUpdateRoomSync">Загрузка …</div>
       </span>
       <h1>My Projects</h1>
-      <div class="badges">
-        <div class="badge">.NET 9</div>
-        <div class="badge">ASP.NET Minimal API</div>
-        <div class="badge">Revit API</div>
-        <div class="badge">Docker • Traefik</div>
-        <div class="badge">PostgreSQL • Redis</div>
-        <div class="badge">Grafana • Prometheus</div>
-        <div class="badge">gRPC • REST</div>
+      <div class="totalBadges">
       </div>
     </section>
 
@@ -144,12 +153,11 @@
             <div class="badges" aria-label="stack">
               <div class="badge">CI/CD</div>
               <div class="badge">Let’s Encrypt</div>
-              <div class="badge">Health Checks</div>
+              <div class="badge">Dota 2</div>
             </div>
             <span class="go">Открыть описание <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg></span>
           </div>
         </a>
-        <!-- Casino (front demo) -->
         <a class="card" href="https://casino.sandboxforge.tech" target="_blank" rel="noopener">
           <div class="body">
             <div class="eyebrow">Front‑end</div>
@@ -204,6 +212,26 @@
 
   // Пример:  
   fetchLastUpdate('bendylot','SandboxForge','lastUpdateRoomSync');
+</script>
+
+<script>
+  // Собираем все бейджи из карточек
+  const badges = Array.from(document.querySelectorAll('.card .badge'))
+    .map(b => b.textContent.trim());
+
+  // Убираем дубликаты
+  const uniqueBadges = [...new Set(badges)];
+
+  // Контейнер для вывода
+  const totalBadgesContainer = document.querySelector('.totalBadges');
+
+  // Генерация бейджей
+  uniqueBadges.forEach(text => {
+    const el = document.createElement('div');
+    el.className = 'badge';
+    el.textContent = text;
+    totalBadgesContainer.appendChild(el);
+  });
 </script>
 
 </body>
