@@ -30,6 +30,8 @@ services:
       - --certificatesresolvers.letsencrypt.acme.httpchallenge=true
       - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
     labels:
+      - traefik.enable=true
+      - traefik.http.routers.dashboard.rule=Host(`traefik.sandboxforge.tech`)
       - traefik.http.routers.dashboard.entrypoints=websecure
       - traefik.http.routers.dashboard.tls=true
       - traefik.http.routers.dashboard.tls.certresolver=letsencrypt
