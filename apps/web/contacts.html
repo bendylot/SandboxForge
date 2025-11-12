@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SandboxForge — Контакты</title>
+
+  <meta name="description" content="Контактная страница SandboxForge: GitHub, почта и обратная связь." />
+  <meta property="og:title" content="SandboxForge — Контакты" />
+  <meta property="og:description" content="Как связаться с автором SandboxForge, написать на почту или GitHub." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sandboxforge.tech/contacts.html" />
+  <meta property="og:image" content="/og.png" />
+  <meta name="theme-color" content="#0ea5e9" />
+  <link rel="icon" href="/favicon.ico" />
+
+  <style>
+    :root{
+      --bg: #0b0d12;
+      --panel: #0f1219;
+      --text: #e8edf2;
+      --muted: #9aa4b2;
+      --brand: #0ea5e9;
+      --brand-2: #22d3ee;
+      --ok: #22c55e;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --card: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      --radius: 18px;
+      --container: min(1200px, 92vw);
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f7fafc; --panel:#fff; --text:#0b1220; --muted:#5b6270;
+        --card: linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.02));
+        --shadow: 0 10px 25px rgba(17,24,39,.08);
+      }
+    }
+    *{box-sizing:border-box}
+    body{margin:0; background:radial-gradient(800px 500px at 90% -10%,rgba(14,165,233,.08),transparent 60%),var(--bg); color:var(--text); font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,"SF Pro",Arial,sans-serif}
+    a{color:inherit; text-decoration:none}
+    .container{width:var(--container); margin:0 auto;}
+
+    header{position:sticky; top:0; z-index:40; backdrop-filter: blur(8px); background: color-mix(in oklab, var(--bg) 82%, transparent); border-bottom: 1px solid color-mix(in oklab, var(--text) 8%, transparent);}
+    .nav{display:flex; align-items:center; justify-content:space-between; height:72px;}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700}
+    .logo{width:28px; height:28px; border-radius:8px; background: conic-gradient(from 180deg, var(--brand), var(--brand-2), var(--brand)); box-shadow: inset 0 0 14px rgba(255,255,255,.25), 0 6px 20px rgba(14,165,233,.25)}
+    .nav a.btn{padding:10px 14px; border-radius:12px; border:1px solid color-mix(in oklab, var(--text) 10%, transparent); background: color-mix(in oklab, var(--panel) 75%, transparent); transition:.2s}
+    .nav a.btn:hover{transform: translateY(-1px); box-shadow: var(--shadow)}
+
+    .hero{padding: clamp(36px, 7vw, 80px) 0 10px; text-align:center;}
+    h1{margin:0; font-size:clamp(28px, 4.2vw, 46px)}
+    .sub{max-width:700px; margin:12px auto 0; color:var(--muted); font-size:18px}
+
+    .grid{display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:24px; margin-top:50px;}
+    .card{border-radius:var(--radius); background:var(--card); border:1px solid color-mix(in oklab, var(--text) 10%, transparent); box-shadow: var(--shadow); padding:22px; text-align:center; transition:.2s}
+    .card:hover{transform:translateY(-2px); box-shadow:0 14px 40px rgba(14,165,233,.18)}
+    .card .title{font-size:18px; font-weight:700; margin:8px 0}
+    .card .desc{font-size:14px; color:var(--muted); margin-bottom:10px}
+
+    form{display:grid; gap:14px; margin-top:40px; max-width:500px; margin-inline:auto;}
+    input, textarea{width:100%; padding:10px 14px; border-radius:10px; border:1px solid color-mix(in oklab, var(--text) 15%, transparent); background: color-mix(in oklab, var(--panel) 85%, transparent); color:var(--text); font-family:inherit; resize:vertical;}
+    button{padding:10px 18px; border-radius:10px; border:none; font-weight:600; background:var(--brand); color:white; cursor:pointer; transition:.2s}
+    button:hover{background:var(--brand-2); transform:translateY(-1px)}
+
+    footer{padding:32px 0 60px; color:var(--muted)}
+    .foot{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; border-top:1px solid color-mix(in oklab, var(--text) 10%, transparent); padding-top:18px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand"><div class="logo"></div><span>SandboxForge</span></div>
+      <nav class="links">
+        <a class="btn" href="index.html">Проекты</a>
+        <a class="btn" href="contacts.html">Контакты</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Связаться со мной</h1>
+      <p class="sub">Если у тебя есть вопросы по моим проектам или просто хочешь предложить идею👇</p>
+    </section>
+
+    <section class="section">
+      <div class="grid">
+        <div class="card">
+          <div class="title">GitHub</div>
+          <p class="desc">Исходный код проектов, pet-эксперименты и open-source инструменты.</p>
+          <a href="https://github.com/bendylot" target="_blank" class="go">Открыть профиль →</a>
+        </div>
+
+        <div class="card">
+          <div class="title">Почта</div>
+          <p class="desc">Для деловых предложений, сотрудничества и технических вопросов.</p>
+          <a href="mailto:maksim.vinogradov.official@gmail.com" class="go">Написать письмо →</a>
+        </div>
+
+        <div class="card">
+          <div class="title">Telegram</div>
+          <p class="desc">Для профессиональных контактов и быстрых обсуждений.</p>
+          <a href="https://t.me/tomlerconer" class="go">Написать письмо →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container">
+    <div class="foot">
+      <div>© <span id="year"></span> SandboxForge. Сделано на кофе и .NET.</div>
+      <a href="https://sandboxforge.tech">sandboxforge.tech</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function sendMessage(e){
+      e.preventDefault();
+      alert('Сообщение отправлено (демо).');
+      e.target.reset();
+    }
+  </script>
+</body>
+</html>
