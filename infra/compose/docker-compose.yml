@@ -31,30 +31,39 @@ services:
     volumes:
       - grafana-data:/var/lib/grafana
 
-  # Бэкенд – соберётся, когда появится папка apps/casino-api
-  # api:
-  #   build:
-  #     context: ../../apps/casino-api
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     # примеры, подставь реальные позже
-  #     CONNECTION_STR: "Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
-  #   ports: ["${API_HTTP_PORT:-8080}:8080"]
-  #   depends_on:
-  #     - postgres
-  #     - redis
 
-  # # Фронт – если будет Next.js в apps/web
-  # web:
-  #   build:
-  #     context: ../../apps/web
-  #     dockerfile: Dockerfile
-  #   ports: ["${WEB_HTTP_PORT:-3000}:3000"]
-  #   environment:
-  #     NEXT_PUBLIC_API_BASE: "http://localhost:${API_HTTP_PORT:-8080}"
-  #   depends_on:
-  #     - api
+  web:
+    ports: ["3000:80"]
+    image: nginx:alpine
+    volumes:
+      - ../../apps/web:/usr/share/nginx/html:ro
+    labels:
+      - traefik.enable=true
+      # HTTPS роутер
+      - traefik.http.routers.site.rule=Host(`sandboxforge.tech`,`www.sandboxforge.tech`)
+      - traefik.http.routers.site.entrypoints=websecure
+      - traefik.http.routers.site.tls=true
+      - traefik.http.routers.site.tls.certresolver=letsencrypt
+      - traefik.http.services.site.loadbalancer.server.port=80
+      # Редирект с http -> https
+      - traefik.http.routers.site-redirect.rule=Host(`sandboxforge.tech`,`www.sandboxforge.tech`)
+      - traefik.http.routers.site-redirect.entrypoints=web
+      - traefik.http.routers.site-redirect.middlewares=to-https
+      - traefik.http.middlewares.to-https.redirectscheme.scheme=https
+      # Опц: редирект www -> apex (или наоборот)
+      - traefik.http.routers.www2apex.rule=Host(`www.sandboxforge.tech`)
+      - traefik.http.routers.www2apex.entrypoints=websecure
+      - traefik.http.routers.www2apex.tls=true
+      - traefik.http.routers.www2apex.middlewares=www2apex
+      - traefik.http.middlewares.www2apex.redirectregex.regex=^https://www\\.(.+)
+      - traefik.http.middlewares.www2apex.redirectregex.replacement=https://$1
+    networks:
+      - traefik-net
 
+networks:
+  traefik-net:
+    external: true
+    
 volumes:
   pg-data:
   redis-data:
