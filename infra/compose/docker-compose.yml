@@ -56,7 +56,7 @@ services:
       - traefik.http.routers.www2apex.tls=true
       - traefik.http.routers.www2apex.middlewares=www2apex
       - traefik.http.middlewares.www2apex.redirectregex.regex=^https://www\\.(.+)
-      - traefik.http.middlewares.www2apex.redirectregex.replacement=https://$1
+      - traefik.http.middlewares.www2apex.redirectregex.replacement=https://$$1
     networks:
       - traefik-net
 
