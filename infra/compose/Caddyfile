@@ -1,0 +1,22 @@
+
+
+# Local development host with internal CA (no public DNS required)
+sandboxforge.local {
+  tls internal
+  reverse_proxy web:80
+  encode zstd gzip
+}
+## Public domains served behind Cloudflare Tunnel (TLS terminates at Cloudflare)
+sandboxforge.tech, www.sandboxforge.tech {
+  tls off
+  # Redirect www -> apex
+  @www host www.sandboxforge.tech
+  redir @www https://sandboxforge.tech{uri}
+
+  # Proxy to the web service (nginx)
+  reverse_proxy web:80
+
+  # Compression
+  encode zstd gzip
+}
+
