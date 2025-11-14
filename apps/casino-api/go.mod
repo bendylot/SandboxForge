@@ -1,4 +1,4 @@
-module casino.sandboxforge.tech/go-auth-api
+module casino.sandboxforge.tech/casino-api
 
 go 1.25.4
 
