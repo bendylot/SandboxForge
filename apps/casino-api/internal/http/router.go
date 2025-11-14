@@ -7,6 +7,8 @@ import (
 	"casino.sandboxforge.tech/casino-api/internal/config"
 	"casino.sandboxforge.tech/casino-api/internal/repo"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func NewRouter(cfg *config.Config, ur *repo.UserRepo) *gin.Engine {
@@ -42,6 +44,6 @@ func NewRouter(cfg *config.Config, ur *repo.UserRepo) *gin.Engine {
 	r.GET("/healthz", func(c *gin.Context) {
 		c.JSON(200, gin.H{"ok": true, "ts": time.Now().UTC()})
 	})
-
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return r
 }

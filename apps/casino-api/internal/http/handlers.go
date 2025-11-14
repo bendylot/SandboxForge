@@ -26,6 +26,17 @@ type LoginReq struct {
 	Password string `json:"password"`
 }
 
+// Register godoc
+// @Summary      Регистрация нового пользователя
+// @Description  Создает пользователя в системе и возвращает JWT
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        data  body  RegisterReq  true  "Email и пароль"
+// @Success      201   {object}  map[string]interface{}
+// @Failure      400   {object}  map[string]string
+// @Failure      409   {object}  map[string]string
+// @Router       /api/register [post]
 func (h *Handlers) Register(c *gin.Context) {
 	var req RegisterReq
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -67,6 +78,15 @@ func (h *Handlers) Register(c *gin.Context) {
 	})
 }
 
+// Login godoc
+// @Summary      Вход пользователя
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        data  body  LoginReq  true  "Email и пароль"
+// @Success      200   {object}  map[string]string
+// @Failure      401   {object}  map[string]string
+// @Router       /api/login [post]
 func (h *Handlers) Login(c *gin.Context) {
 	var req LoginReq
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -92,6 +112,14 @@ func (h *Handlers) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"token": token})
 }
 
+// Me godoc
+// @Summary      Информация о текущем пользователе
+// @Tags         users
+// @Security     BearerAuth
+// @Produce      json
+// @Success      200  {object}  map[string]interface{}
+// @Failure      401  {object}  map[string]string
+// @Router       /api/me [get]
 func (h *Handlers) Me(c *gin.Context) {
 	claimsVal, _ := c.Get("claims")
 	claims := claimsVal.(map[string]interface{})

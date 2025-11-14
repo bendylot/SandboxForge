@@ -1,0 +1,11 @@
+basePath: /
+host: localhost:8080
+info:
+  contact: {}
+  description: Бэкенд авторизации для SandboxForge (Go + Gin + JWT).
+  title: Casino API Auth Service
+  version: "1.0"
+paths: {}
+schemes:
+- http
+swagger: "2.0"
