@@ -2,6 +2,8 @@ module casino.sandboxforge.tech/casino-api
 
 go 1.25.4
 
+//go:generate swag init -g cmd/api/main.go -o cmd/api/docs
+
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/PuerkitoBio/purell v1.1.1 // indirect

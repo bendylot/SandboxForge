@@ -23,24 +23,23 @@ type Handlers struct {
 // @Tags         auth
 // @Accept       json
 // @Produce      json
-// @Param        data  body  RegisterReq  true  "Email и пароль"
+// @Param        data  body  RegisterReq  true  "Логин и пароль"
 // @Success      201   {object}  map[string]interface{}
 // @Failure      400   {object}  map[string]string
 // @Failure      409   {object}  map[string]string
-// @Router       /api/register [post]
+// @Router       /api/auth/register [post]
 func (h *Handlers) Register(c *gin.Context) {
 	var req RegisterReq
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "bad json"})
 		return
 	}
-	email := strings.ToLower(strings.TrimSpace(req.Email))
-	if email == "" || len(req.Password) < 6 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "email/password invalid"})
+	login := strings.ToLower(strings.TrimSpace(req.Login))
+	if login == "" || len(req.Password) < 2 || len(req.Password) > 24 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "login/password invalid"})
 		return
 	}
-	// exists?
-	existing, err := h.Repo.ByEmail(c, email)
+	existing, err := h.Repo.ByLogin(c, login)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "db error"})
 		return
@@ -50,13 +49,13 @@ func (h *Handlers) Register(c *gin.Context) {
 		return
 	}
 	hash, _ := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
-	uid, err := h.Repo.Create(context.Background(), email, string(hash))
+	uid, err := h.Repo.Create(context.Background(), login, string(hash))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "db insert error"})
 		return
 	}
 
-	token, err := makeToken(h.Cfg.JWTSecret, h.Cfg.JWTTTL, uid, email)
+	token, err := makeToken(h.Cfg.JWTSecret, h.Cfg.JWTTTL, uid, login)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "jwt error"})
 		return
@@ -64,7 +63,7 @@ func (h *Handlers) Register(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{
 		"id":    uid,
-		"email": email,
+		"email": login,
 		"token": token,
 	})
 }
@@ -74,18 +73,18 @@ func (h *Handlers) Register(c *gin.Context) {
 // @Tags         auth
 // @Accept       json
 // @Produce      json
-// @Param        data  body  LoginReq  true  "Email и пароль"
+// @Param        data  body  LoginReq  true  "Логин и пароль"
 // @Success      200   {object}  map[string]string
 // @Failure      401   {object}  map[string]string
-// @Router       /api/login [post]
+// @Router       /api/auth/login [post]
 func (h *Handlers) Login(c *gin.Context) {
 	var req LoginReq
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "bad json"})
 		return
 	}
-	email := strings.ToLower(strings.TrimSpace(req.Email))
-	u, err := h.Repo.ByEmail(c, email)
+	login := strings.ToLower(strings.TrimSpace(req.Login))
+	u, err := h.Repo.ByLogin(c, login)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "db error"})
 		return
@@ -94,7 +93,7 @@ func (h *Handlers) Login(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid credentials"})
 		return
 	}
-	token, err := makeToken(h.Cfg.JWTSecret, h.Cfg.JWTTTL, u.ID, u.Email)
+	token, err := makeToken(h.Cfg.JWTSecret, h.Cfg.JWTTTL, u.ID, u.Login)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "jwt error"})
 		return

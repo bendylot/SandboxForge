@@ -1,3 +1,5 @@
+//go:generate swag init -g main.go -o docs -d .,../internal/api
+
 package main
 
 // @title           Casino API

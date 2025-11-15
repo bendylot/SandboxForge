@@ -31,8 +31,11 @@ func NewRouter(cfg *config.Config, ur *repo.UserRepo) *gin.Engine {
 
 	api := r.Group("/api")
 	{
-		api.POST("/register", h.Register)
-		api.POST("/login", h.Login)
+		auth := api.Group("/auth")
+		{
+			auth.POST("/register", h.Register)
+			auth.POST("/login", h.Login)
+		}
 
 		protected := api.Group("")
 		protected.Use(AuthMiddleware(cfg))

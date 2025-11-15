@@ -1,11 +1,11 @@
 package api
 
 type RegisterReq struct {
-	Email    string `json:"email" binding:"required,email"`
-	Password string `json:"password" binding:"required,min=6"`
+	Login    string `json:"login" binding:"required,min=2,max=24"`
+	Password string `json:"password" binding:"required,min=6,max=24"`
 }
 
 type LoginReq struct {
-	Email    string `json:"email"`
+	Login    string `json:"login"`
 	Password string `json:"password"`
 }

@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/login": {
+        "/api/auth/login": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -29,12 +29,12 @@ const docTemplate = `{
                 "summary": "Вход пользователя",
                 "parameters": [
                     {
-                        "description": "Email и пароль",
+                        "description": "Логин и пароль",
                         "name": "data",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/http.LoginReq"
+                            "$ref": "#/definitions/api.LoginReq"
                         }
                     }
                 ],
@@ -50,6 +50,59 @@ const docTemplate = `{
                     },
                     "401": {
                         "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/register": {
+            "post": {
+                "description": "Создает пользователя в системе и возвращает JWT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Регистрация нового пользователя",
+                "parameters": [
+                    {
+                        "description": "Логин и пароль",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.RegisterReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -93,66 +146,13 @@ const docTemplate = `{
                     }
                 }
             }
-        },
-        "/api/register": {
-            "post": {
-                "description": "Создает пользователя в системе и возвращает JWT",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "auth"
-                ],
-                "summary": "Регистрация нового пользователя",
-                "parameters": [
-                    {
-                        "description": "Email и пароль",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/http.RegisterReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "409": {
-                        "description": "Conflict",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
         }
     },
     "definitions": {
-        "http.LoginReq": {
+        "api.LoginReq": {
             "type": "object",
             "properties": {
-                "email": {
+                "login": {
                     "type": "string"
                 },
                 "password": {
@@ -160,14 +160,22 @@ const docTemplate = `{
                 }
             }
         },
-        "http.RegisterReq": {
+        "api.RegisterReq": {
             "type": "object",
+            "required": [
+                "login",
+                "password"
+            ],
             "properties": {
-                "email": {
-                    "type": "string"
+                "login": {
+                    "type": "string",
+                    "maxLength": 24,
+                    "minLength": 2
                 },
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 24,
+                    "minLength": 6
                 }
             }
         }

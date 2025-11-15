@@ -4,7 +4,7 @@ import "time"
 
 type User struct {
 	ID        int64
-	Email     string
-	Password  string // hashed
+	Login     string
+	Password  string
 	CreatedAt time.Time
 }

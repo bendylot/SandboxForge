@@ -1,18 +1,25 @@
 basePath: /
 definitions:
-  http.LoginReq:
+  api.LoginReq:
     properties:
-      email:
+      login:
         type: string
       password:
         type: string
     type: object
-  http.RegisterReq:
+  api.RegisterReq:
     properties:
-      email:
+      login:
+        maxLength: 24
+        minLength: 2
         type: string
       password:
+        maxLength: 24
+        minLength: 6
         type: string
+    required:
+    - login
+    - password
     type: object
 host: localhost:8080
 info:
@@ -21,17 +28,17 @@ info:
   title: Casino API
   version: "1.0"
 paths:
-  /api/login:
+  /api/auth/login:
     post:
       consumes:
       - application/json
       parameters:
-      - description: Email и пароль
+      - description: Логин и пароль
         in: body
         name: data
         required: true
         schema:
-          $ref: '#/definitions/http.LoginReq'
+          $ref: '#/definitions/api.LoginReq'
       produces:
       - application/json
       responses:
@@ -50,39 +57,18 @@ paths:
       summary: Вход пользователя
       tags:
       - auth
-  /api/me:
-    get:
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            additionalProperties: true
-            type: object
-        "401":
-          description: Unauthorized
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - BearerAuth: []
-      summary: Информация о текущем пользователе
-      tags:
-      - users
-  /api/register:
+  /api/auth/register:
     post:
       consumes:
       - application/json
       description: Создает пользователя в системе и возвращает JWT
       parameters:
-      - description: Email и пароль
+      - description: Логин и пароль
         in: body
         name: data
         required: true
         schema:
-          $ref: '#/definitions/http.RegisterReq'
+          $ref: '#/definitions/api.RegisterReq'
       produces:
       - application/json
       responses:
@@ -106,6 +92,27 @@ paths:
       summary: Регистрация нового пользователя
       tags:
       - auth
+  /api/me:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Информация о текущем пользователе
+      tags:
+      - users
 schemes:
 - http
 securityDefinitions:

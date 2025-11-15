@@ -31,7 +31,7 @@ func AutoMigrate(pool *pgxpool.Pool) {
 	ddl := `
 CREATE TABLE IF NOT EXISTS users (
   id         BIGSERIAL PRIMARY KEY,
-  email      TEXT UNIQUE NOT NULL,
+  login      TEXT UNIQUE NOT NULL,
   password   TEXT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
