@@ -28,7 +28,7 @@ services:
     image: nginx:alpine
     container_name: casino_web
     volumes:
-    - ../web:/usr/share/nginx/html:ro
+    - ../web/src:/usr/share/nginx/html:ro
     ports:
     - "8081:80"
     depends_on:

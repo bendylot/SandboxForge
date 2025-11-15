@@ -18,16 +18,14 @@ import (
 
 	"casino.sandboxforge.tech/casino-api/internal/api"
 	"casino.sandboxforge.tech/casino-api/internal/config"
-	"casino.sandboxforge.tech/casino-api/internal/db"
+	"casino.sandboxforge.tech/casino-api/internal/domain"
 	"casino.sandboxforge.tech/casino-api/internal/repo"
-
-	_ "casino.sandboxforge.tech/casino-api/cmd/api/docs"
 )
 
 func main() {
 	cfg := config.Load()
-	pool := db.NewPool(cfg.DBURL)
-	db.AutoMigrate(pool)
+	pool := domain.NewPool(cfg.DBURL)
+	domain.AutoMigrate(pool)
 
 	userRepo := repo.NewUserRepo(pool)
 	router := api.NewRouter(cfg, userRepo)
