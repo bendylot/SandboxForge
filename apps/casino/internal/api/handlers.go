@@ -1,29 +1,20 @@
-package http
+package api
 
 import (
 	"context"
 	"net/http"
 	"strings"
 
-	"casino.sandboxforge.tech/casino-api/internal/config"
-	"casino.sandboxforge.tech/casino-api/internal/repo"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
+
+	"casino.sandboxforge.tech/casino-api/internal/config"
+	"casino.sandboxforge.tech/casino-api/internal/repo"
 )
 
 type Handlers struct {
 	Cfg  *config.Config
 	Repo *repo.UserRepo
-}
-
-type RegisterReq struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
-type LoginReq struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
 }
 
 // Register godoc

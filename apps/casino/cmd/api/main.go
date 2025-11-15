@@ -1,20 +1,25 @@
 package main
 
-// @title           Casino API Auth Service
+// @title           Casino API
 // @version         1.0
-// @description     Бэкенд авторизации для SandboxForge (Go + Gin + JWT).
+// @description     Бэкенд авторизации для казино-проекта.
 // @host            localhost:8080
 // @BasePath        /
 // @schemes         http
+
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 import (
 	"fmt"
 	"log"
 
-	_ "casino.sandboxforge.tech/casino-api/cmd/api/docs"
+	"casino.sandboxforge.tech/casino-api/internal/api"
 	"casino.sandboxforge.tech/casino-api/internal/config"
 	"casino.sandboxforge.tech/casino-api/internal/db"
-	"casino.sandboxforge.tech/casino-api/internal/http"
 	"casino.sandboxforge.tech/casino-api/internal/repo"
+
+	_ "casino.sandboxforge.tech/casino-api/cmd/api/docs"
 )
 
 func main() {
@@ -23,7 +28,7 @@ func main() {
 	db.AutoMigrate(pool)
 
 	userRepo := repo.NewUserRepo(pool)
-	router := http.NewRouter(cfg, userRepo)
+	router := api.NewRouter(cfg, userRepo)
 
 	addr := fmt.Sprintf(":%s", cfg.AppPort)
 	log.Printf("API listening on %s", addr)
