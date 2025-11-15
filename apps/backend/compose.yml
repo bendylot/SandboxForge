@@ -1,3 +1,4 @@
+name: sandboxforge
 services:
   db:
     image: postgres:16-alpine
@@ -9,7 +10,9 @@ services:
       - "6544:5432"
     volumes:
       - dbdata:/var/lib/postgresql/data
-  api:
+    networks: [sf_net]
+    # profiles: [db]
+  casino-api:
     build:
       context: .
       dockerfile: Dockerfile
@@ -22,16 +25,11 @@ services:
       JWT_TTL_MINUTES: "60"
     ports:
     - "${APP_PORT:-8080}:8080"
-    depends_on:
-    - db
-  web:
-    image: nginx:alpine
-    container_name: casino_web
-    volumes:
-    - ../web/src:/usr/share/nginx/html:ro
-    ports:
-    - "8081:80"
-    depends_on:
-      - api
+    depends_on: [db]
+    networks: [sf_net]
+    # profiles: [api]
 volumes:
   dbdata:
+networks:
+  sf_net:
+    external: true
