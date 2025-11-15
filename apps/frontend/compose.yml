@@ -10,7 +10,6 @@ services:
     # profiles: [web]
     volumes:
       - ./web/src:/usr/share/nginx/html:ro
-      - ./web/docker/nginx:/etc/nginx/conf.d:ro
 networks:
   sf_net:
     external: true
