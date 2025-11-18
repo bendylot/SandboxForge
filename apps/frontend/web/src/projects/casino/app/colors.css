@@ -1,0 +1,10 @@
+:root {
+  --color-bg: theme("colors.bg");
+  --color-card: theme("colors.card");
+  --color-muted: theme("colors.muted");
+  --color-brand: theme("colors.brand");
+  --color-brand2: theme("colors.brand2");
+  --color-ok: theme("colors.ok");
+  --color-bad: theme("colors.bad");
+  --color-warn: theme("colors.warn");
+}

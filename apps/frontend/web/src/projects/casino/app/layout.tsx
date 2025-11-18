@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import "./colors.css";
 import "./global.css";
 
 export const metadata: Metadata = {
@@ -22,7 +23,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru">
-      <body>{children}</body>
+      <body className="bg-[#0b1020] text-white leading-relaxed">
+        {children}
+      </body>
     </html>
   );
 }
