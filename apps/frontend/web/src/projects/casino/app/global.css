@@ -2,28 +2,74 @@
 @tailwind components;
 @tailwind utilities;
 
-
-:root { 
-    --border: 1px solid rgba(255,255,255,.08);
+:root {
+  --border: 1px solid rgba(255, 255, 255, 0.08);
 }
-html,body{height:100%}
-body{
-    @apply text-white leading-relaxed;
-    background:
-    radial-gradient(1200px_800px_at_80%_-10%, rgba(34,211,238,.08), transparent_60%),
-    radial-gradient(1400px_900px_at_-10%_20%, rgba(14,165,233,.08), transparent_65%),
+html,
+body {
+  height: 100%;
+}
+body {
+  @apply text-white leading-relaxed;
+  background: radial-gradient(
+      1200px_800px_at_80%_-10%,
+      rgba(34, 211, 238, 0.08),
+      transparent_60%
+    ),
+    radial-gradient(
+      1400px_900px_at_-10%_20%,
+      rgba(14, 165, 233, 0.08),
+      transparent_65%
+    ),
     bg;
 }
-.btn{ @apply inline-flex items-center gap-2 rounded-xl border px-3 py-2 transition;
-    border: var(--border); background: rgba(255,255,255,.02);
+.btn {
+  @apply inline-flex items-center gap-2 rounded-xl border px-3 py-2 transition;
+  border: var(--border);
+  background: rgba(255, 255, 255, 0.02);
 }
-.btn:hover{ @apply -translate-y-px; background: rgba(255,255,255,.04); }
-.btn-primary{ @apply text-[#061226]; background-image: linear-gradient(135deg, theme(colors.brand), theme(colors.brand2)); border-color: transparent; }
-.btn-ghost{ background: transparent; }
-.btn-sm{ @apply text-sm px-3 py-1.5 rounded-lg; }
-.card{ background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border: var(--border); border-radius: 16px; box-shadow: 0 10px 30px rgba(2,6,23,.45); }
-.badge{ border: var(--border); @apply text-[13px] px-2.5 py-1 rounded-full text-muted bg-white/5; }
-.label{ border: var(--border); @apply text-xs px-2 py-0.5 rounded-full text-muted; }
-.dot{ @apply mt-2 w-2 h-2 rounded-full; background: theme(colors.brand2); box-shadow: 0 0 0 3px rgba(34,211,238,.15);
+.btn:hover {
+  @apply -translate-y-px;
+  background: rgba(255, 255, 255, 0.04);
 }
-.muted{ @apply text-muted; }
+.btn-primary {
+  @apply text-[#061226];
+  background-image: linear-gradient(
+    135deg,
+    theme(colors.brand),
+    theme(colors.brand2)
+  );
+  border-color: transparent;
+}
+.btn-ghost {
+  background: transparent;
+}
+.btn-sm {
+  @apply text-sm px-3 py-1.5 rounded-lg;
+}
+.card {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.02),
+    rgba(255, 255, 255, 0.01)
+  );
+  border: var(--border);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.45);
+}
+.badge {
+  border: var(--border);
+  @apply text-[13px] px-2.5 py-1 rounded-full text-muted bg-white/5;
+}
+.label {
+  border: var(--border);
+  @apply text-xs px-2 py-0.5 rounded-full text-muted;
+}
+.dot {
+  @apply mt-2 w-2 h-2 rounded-full;
+  background: theme(colors.brand2);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15);
+}
+.muted {
+  @apply text-muted;
+}

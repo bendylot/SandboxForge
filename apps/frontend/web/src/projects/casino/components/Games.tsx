@@ -1,4 +1,4 @@
-import { games } from "@/data/games";
+import { games } from "../data/games";
 
 export default function Games() {
   return (
