@@ -1,10 +1,110 @@
-node_modules
-*/node_modules
-/node_modules
-.next
-*/.next
-/.next
-.next/
-.next/*
+############################################################
+# Node / Next.js
+############################################################
+
+# Dependencies
 node_modules/
-node_modules/*
+
+# Next.js build output
+.next/
+out/
+dist/
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local env files
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+*.local.env
+
+# Next.js cache
+.vercel/
+.vscode/
+.next/cache/
+
+############################################################
+# Go / Golang backend
+############################################################
+
+# Build output
+bin/
+build/
+dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Module cache
+/pkg/
+/go.sum
+/go.work
+/go.work.sum
+
+# GoLand, VS Code, etc.
+.idea/
+.vscode/
+
+############################################################
+# OS / Temporary files
+############################################################
+
+.DS_Store
+Thumbs.db
+
+############################################################
+# Docker
+############################################################
+
+# Docker Compose override
+docker-compose.override.yml
+docker-compose.local.yml
+
+# Local volumes
+**/volumes/
+**/.docker/
+
+############################################################
+# Logs
+############################################################
+
+logs/
+*.log
+*.pid
+*.seed
+*.cover
+
+############################################################
+# Misc
+############################################################
+
+# Editor backups
+*~
+*.swp
+
+# TypeScript
+*.tsbuildinfo
+
+# Ignore generated Prisma files (если вдруг есть)
+prisma/*.db
+
+############################################################
+# Monorepo-specific
+############################################################
+
+# Turbo / Nx caches
+.turbo/
+nx-cache/
+
+# Build artifacts of multiple apps
+apps/**/dist/
+apps/**/.next/
+apps/**/node_modules/
