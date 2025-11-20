@@ -1,23 +1,40 @@
-# ---------- Runtime: Nginx ----------
-FROM nginx:1.27-alpine
+############################################################
+# Билдим и запускаем Next.js приложение (apps/casino/web/src)
+############################################################
 
-# Без лишнего шума в таймзоне/логах
-ENV TZ=UTC
+# ---------- Builder ----------
+FROM node:20-alpine AS builder
+WORKDIR /app
 
-# Опционально: свой конфиг с кэшированием, gzip и SPA-фолбеком
-# Если не нужен — закомментируй COPY, Nginx возьмёт дефолтный.
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Без телеметрии и dev-зависимостей в финальном образе
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1
 
-# Копируем статические файлы сайта внутрь образа
-# Помести свои файлы рядом с Dockerfile в папке ./web (index.html и т.д.)
-COPY web/src/ /usr/share/nginx/html/
+# Депсы отдельно для лучшего кеша
+COPY src/package*.json ./
+RUN npm ci
 
-# На всякий случай: правильные права и владелец
-RUN chmod -R 755 /usr/share/nginx/html && \
-    chown -R nginx:nginx /usr/share/nginx/html
+# Исходники + сборка
+COPY src ./
+RUN npm run build && npm prune --omit=dev
 
-EXPOSE 80
-HEALTHCHECK --interval=30s --timeout=3s \
-  CMD wget -qO- http://localhost/ || exit 1
+# ---------- Runtime ----------
+FROM node:20-alpine AS runner
+WORKDIR /app
 
-CMD ["nginx", "-g", "daemon off;"]
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    HOST=0.0.0.0 \
+    PORT=3000
+
+# Берём только то, что нужно для запуска
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/next.config.mjs ./next.config.mjs
+
+EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
+  CMD wget -qO- http://localhost:${PORT}/ || exit 1
+
+CMD ["npm", "run", "start"]
