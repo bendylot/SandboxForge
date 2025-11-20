@@ -4,35 +4,6 @@ export function RegCurrency() {
       <div className="max-w-[1100px] mx-auto px-6 grid md:grid-cols-2 gap-4">
         <div className="card p-6">
           <h3 id="reg" className="mb-2 text-xl font-semibold">
-            Регистрация
-          </h3>
-          <p className="muted">
-            Профиль с ником/аватаром/кошельком. После регистрации начисляется
-            стартовый пакет монет <em>(настраивается)</em>.
-          </p>
-          <ul className="grid gap-2 mt-2">
-            {[
-              "Email/пароль или OAuth (будущее).",
-              "Верификация почты; базовые лимиты против мульти‑аккаунтов.",
-              "Профиль: баланс, история транзакций, достижения.",
-            ].map((x, i) => (
-              <li key={i} className="flex gap-2 items-start">
-                <span className="dot" /> <span>{x}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-3 flex gap-2">
-            <button className="btn btn-primary" id="signup2">
-              Создать аккаунт
-            </button>
-            <button className="btn" id="signin2">
-              Войти
-            </button>
-          </div>
-        </div>
-
-        <div className="card p-6">
-          <h3 id="currency" className="mb-2 text-xl font-semibold">
             Виртуальная валюта
           </h3>
           <p className="muted">
@@ -50,6 +21,43 @@ export function RegCurrency() {
               </li>
             ))}
           </ul>
+        </div>
+        <div className="card p-6">
+          <h3 className="mb-2 font-semibold text-xl">Как это работает</h3>
+          <ul className="grid gap-2">
+            {[
+              <>
+                <b>1. Регистрация.</b> Приветственный пакет виртуальной валюты.
+              </>,
+              <>
+                <b>2. Пополнение по пятницам.</b> Еженедельно + бонусы.
+              </>,
+              <>
+                <b>3. Единый баланс.</b> Один кошелёк — множество мини‑игр.
+              </>,
+              <>
+                <b>4. Без реальных денег.</b> Только фан и геймификация.
+              </>,
+            ].map((x, i) => (
+              <li key={i} className="flex gap-2 items-start">
+                <span className="dot" /> <span>{x}</span>
+              </li>
+            ))}
+          </ul>
+          <p
+            className="mt-3 border-l-4 border-warn/100 rounded-md p-3 text-[#ffe9c2]"
+            style={{ background: "rgba(245, 158, 11, .08)" }}
+          >
+            Это не азартные игры на деньги. Валюта не продаётся и не обменивается.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-3 items-center">
+            <button type="button" className="btn btn-primary" id="signup2">
+              Зарегистрироваться
+            </button>
+            <span className="muted text-sm">
+              Получи приветственный пакет и пятничные начисления.
+            </span>
+          </div>
         </div>
       </div>
     </section>

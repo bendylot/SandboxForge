@@ -49,16 +49,16 @@ export default function ModalSignup() {
     ["nick", "email", "password", "terms"].forEach((n) => err(n, ""));
     let ok = true;
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    if (nick.length < 2) {
-      err("nick", "Минимум 2 символа");
+    if (nick.length < 4) {
+      err("nick", "Минимум 4 символа");
       ok = false;
     }
     if (!emailRe.test(email)) {
       err("email", "Неверный email");
       ok = false;
     }
-    if (!password || password.length < 8) {
-      err("password", "Минимум 8 символов");
+    if (!password || password.length < 4) {
+      err("password", "Минимум 4 символов");
       ok = false;
     }
     if (!terms) {
@@ -94,16 +94,16 @@ export default function ModalSignup() {
       aria-modal="true"
     >
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur"
+        className="absolute inset-0 bg-[#030712]/85 backdrop-blur-[6px]"
         onClick={() => setOpen(false)}
       />
       <div
         ref={dialogRef}
         tabIndex={-1}
         role="document"
-        className="relative mx-auto mt-[6vh] max-w-[560px] card border p-0"
+        className="relative mx-auto mt-[6vh] max-w-[560px] p-0 rounded-2xl border border-white/15 bg-[#0a1428]/95 text-white shadow-[0_25px_80px_rgba(2,6,23,0.8)]"
       >
-        <header className="px-5 py-4 border-b border-white/10 flex items-center justify-between">
+        <header className="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-white/5 rounded-t-2xl">
           <h2 className="text-lg font-semibold">Регистрация</h2>
           <button
             className="text-muted text-2xl"
@@ -113,12 +113,12 @@ export default function ModalSignup() {
             ×
           </button>
         </header>
-        <section className="px-5 pt-4 pb-2">
-          <p className="muted -mt-1">
+        <section className="px-5 pt-4 pb-2 space-y-4">
+          <p className="text-white/90">
             Выберите способ регистрации. Реальных денег нет — только виртуальные
             монеты и фан.
           </p>
-          <div className="grid md:grid-cols-3 gap-2 my-3">
+          <div className="grid md:grid-cols-3 gap-2">
             {[
               { k: "google", icon: "🟢", t: "Google" },
               { k: "yandex", icon: "🟥", t: "Яндекс" },
@@ -134,12 +134,18 @@ export default function ModalSignup() {
               </button>
             ))}
           </div>
-          <div className="grid place-items-center my-2">
-            <span className="badge text-[12px]">или</span>
+          <div className="grid place-items-center">
+            <span className="badge text-[12px] bg-white/10 text-white">
+              или
+            </span>
           </div>
-          <form onSubmit={onSubmit} className="grid gap-3 my-2" noValidate>
+          <form
+            onSubmit={onSubmit}
+            className="grid gap-3 bg-white/5 rounded-xl p-4 border border-white/10"
+            noValidate
+          >
             <div className="grid gap-1">
-              <label htmlFor="signup-nick" className="font-semibold">
+              <label htmlFor="signup-nick" className="font-semibold text-white">
                 Никнейм
               </label>
               <input
@@ -147,10 +153,10 @@ export default function ModalSignup() {
                 name="nick"
                 autoComplete="nickname"
                 required
-                minLength={2}
-                maxLength={24}
+                minLength={4}
+                maxLength={15}
                 placeholder="Например, bendylot"
-                className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 outline-none focus:border-brand/50"
+                className="bg-white/10 border border-white/20 rounded-lg px-3 py-2 outline-none focus:border-brand/60 placeholder:text-white/60"
               />
               <small
                 className="text-[#ffb4b4] min-h-[1em]"
@@ -158,7 +164,10 @@ export default function ModalSignup() {
               />
             </div>
             <div className="grid gap-1">
-              <label htmlFor="signup-email" className="font-semibold">
+              <label
+                htmlFor="signup-email"
+                className="font-semibold text-white"
+              >
                 Email
               </label>
               <input
@@ -168,7 +177,7 @@ export default function ModalSignup() {
                 autoComplete="email"
                 required
                 placeholder="you@example.com"
-                className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 outline-none focus:border-brand/50"
+                className="bg-white/10 border border-white/20 rounded-lg px-3 py-2 outline-none focus:border-brand/60 placeholder:text-white/60"
               />
               <small
                 className="text-[#ffb4b4] min-h-[1em]"
@@ -176,7 +185,7 @@ export default function ModalSignup() {
               />
             </div>
             <div className="grid gap-1">
-              <label htmlFor="signup-pass" className="font-semibold">
+              <label htmlFor="signup-pass" className="font-semibold text-white">
                 Пароль
               </label>
               <input
@@ -185,16 +194,16 @@ export default function ModalSignup() {
                 type="password"
                 autoComplete="new-password"
                 required
-                minLength={8}
-                placeholder="Минимум 8 символов"
-                className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 outline-none focus:border-brand/50"
+                minLength={4}
+                placeholder="Минимум 4 символов"
+                className="bg-white/10 border border-white/20 rounded-lg px-3 py-2 outline-none focus:border-brand/60 placeholder:text-white/60"
               />
               <small
                 className="text-[#ffb4b4] min-h-[1em]"
                 data-err-for="password"
               />
             </div>
-            <label className="inline-flex gap-2 items-center select-none">
+            <label className="inline-flex gap-2 items-center select-none text-white">
               <input type="checkbox" id="signup-terms" required />
               <span>Согласен с правилами и обработкой данных</span>
             </label>
@@ -216,7 +225,7 @@ export default function ModalSignup() {
             </div>
           </form>
         </section>
-        <footer className="px-5 py-3 border-t border-white/10 text-muted">
+        <footer className="px-5 py-3 border-t border-white/10 text-white/70 bg-white/5 rounded-b-2xl">
           Виртуальная валюта не имеет денежной стоимости.
         </footer>
       </div>
