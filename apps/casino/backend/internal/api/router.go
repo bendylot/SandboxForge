@@ -17,7 +17,9 @@ func NewRouter(cfg *config.Config, ur *repo.UserRepo) *gin.Engine {
 
 	// Простой CORS для локалки
 	r.Use(func(c *gin.Context) {
-		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Origin", "http://localhost:5173")
+		c.Header("Access-Control-Allow-Credentials", "true")
+
 		c.Header("Access-Control-Allow-Headers", "Authorization, Content-Type")
 		c.Header("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
 		if c.Request.Method == http.MethodOptions {

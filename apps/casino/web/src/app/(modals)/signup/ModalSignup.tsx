@@ -8,13 +8,10 @@ export default function ModalSignup() {
   // Привязываем внешние кнопки по id (как в исходнике)
   useEffect(() => {
     const a = document.getElementById("btn-signup");
-    const b = document.getElementById("signup2");
     const on = () => setOpen(true);
     a?.addEventListener("click", on);
-    b?.addEventListener("click", on);
     return () => {
       a?.removeEventListener("click", on);
-      b?.removeEventListener("click", on);
     };
   }, []);
 
@@ -36,21 +33,21 @@ export default function ModalSignup() {
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget as HTMLFormElement & {
-      nick: HTMLInputElement;
+      login: HTMLInputElement;
       email: HTMLInputElement;
       password: HTMLInputElement;
     };
-    const nick = form.nick.value.trim();
+    const login = form.login.value.trim();
     const email = form.email.value.trim();
     const password = form.password.value;
     const terms = (document.getElementById("signup-terms") as HTMLInputElement)
       ?.checked;
 
-    ["nick", "email", "password", "terms"].forEach((n) => err(n, ""));
+    ["login", "email", "password", "terms"].forEach((n) => err(n, ""));
     let ok = true;
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    if (nick.length < 4) {
-      err("nick", "Минимум 4 символа");
+    if (login.length < 4) {
+      err("login", "Минимум 4 символа");
       ok = false;
     }
     if (!emailRe.test(email)) {
@@ -68,11 +65,11 @@ export default function ModalSignup() {
     if (!ok) return;
 
     try {
-      const res = await fetch("/api/auth/register", {
+      const res = await fetch("http://localhost:3001/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ nick, email, password }),
+        body: JSON.stringify({ login, password }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({ message: "Ошибка" }));
@@ -145,13 +142,16 @@ export default function ModalSignup() {
             noValidate
           >
             <div className="grid gap-1">
-              <label htmlFor="signup-nick" className="font-semibold text-white">
+              <label
+                htmlFor="signup-login"
+                className="font-semibold text-white"
+              >
                 Никнейм
               </label>
               <input
-                id="signup-nick"
-                name="nick"
-                autoComplete="nickname"
+                id="signup-login"
+                name="login"
+                autoComplete="login"
                 required
                 minLength={4}
                 maxLength={15}
@@ -160,7 +160,7 @@ export default function ModalSignup() {
               />
               <small
                 className="text-[#ffb4b4] min-h-[1em]"
-                data-err-for="nick"
+                data-err-for="login"
               />
             </div>
             <div className="grid gap-1">
