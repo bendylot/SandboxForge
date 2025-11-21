@@ -9,7 +9,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 
 	"casino.sandboxforge.tech/casino-api/internal/config"
-	"casino.sandboxforge.tech/casino-api/internal/repo"
+	repo "casino.sandboxforge.tech/casino-api/internal/repo/postgres"
 )
 
 type Handlers struct {

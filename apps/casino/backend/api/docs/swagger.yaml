@@ -1,27 +1,5 @@
 basePath: /
-definitions:
-  api.LoginReq:
-    properties:
-      login:
-        type: string
-      password:
-        type: string
-    type: object
-  api.RegisterReq:
-    properties:
-      login:
-        maxLength: 24
-        minLength: 2
-        type: string
-      password:
-        maxLength: 24
-        minLength: 6
-        type: string
-    required:
-    - login
-    - password
-    type: object
-host: localhost:8080
+host: localhost:3001
 info:
   contact: {}
   description: Бэкенд авторизации для казино-проекта.
@@ -75,7 +53,7 @@ paths:
         "201":
           description: Created
           schema:
-            additionalProperties: true
+            additionalProperties: {}
             type: object
         "400":
           description: Bad Request
@@ -100,7 +78,7 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties: true
+            additionalProperties: {}
             type: object
         "401":
           description: Unauthorized
@@ -113,6 +91,42 @@ paths:
       summary: Информация о текущем пользователе
       tags:
       - users
+  /healthz:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Healthcheck
+definitions:
+  api.LoginReq:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    required:
+    - login
+    - password
+    type: object
+  api.RegisterReq:
+    properties:
+      login:
+        maxLength: 24
+        minLength: 2
+        type: string
+      password:
+        maxLength: 24
+        minLength: 6
+        type: string
+    required:
+    - login
+    - password
+    type: object
 schemes:
 - http
 securityDefinitions:

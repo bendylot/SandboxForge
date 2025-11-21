@@ -10,7 +10,18 @@ services:
       - "6544:5432"
     volumes:
       - dbdata:/var/lib/postgresql/data
-    networks: [sf_net]
+  casino-api:
+    build:
+      context: ./backend
+    container_name: casino-api
+    ports:
+      - "3001:3001"
+    environment:
+      HOST: 0.0.0.0
+      PORT: 3001
+    restart: unless-stopped
+    depends_on:
+      - db
   casino-web:
     build:
       context: ./web
@@ -23,8 +34,7 @@ services:
       HOST: 0.0.0.0
       PORT: 3000
     restart: unless-stopped
+    depends_on:
+      - casino-api
 volumes:
   dbdata:
-networks:
-  sf_net:
-    external: true

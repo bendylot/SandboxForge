@@ -5,7 +5,7 @@ package main
 // @title           Casino API
 // @version         1.0
 // @description     Бэкенд авторизации для казино-проекта.
-// @host            localhost:8080
+// @host            localhost:3001
 // @BasePath        /
 // @schemes         http
 
@@ -16,14 +16,18 @@ import (
 	"fmt"
 	"log"
 
+	docs "casino.sandboxforge.tech/casino-api/api/docs"
 	"casino.sandboxforge.tech/casino-api/internal/api"
 	"casino.sandboxforge.tech/casino-api/internal/config"
 	"casino.sandboxforge.tech/casino-api/internal/domain"
-	"casino.sandboxforge.tech/casino-api/internal/repo"
+	repo "casino.sandboxforge.tech/casino-api/internal/repo/postgres"
 )
 
 func main() {
 	cfg := config.Load()
+	docs.SwaggerInfo.Host = fmt.Sprintf("localhost:%s", cfg.AppPort)
+	docs.SwaggerInfo.BasePath = "/"
+
 	pool := domain.NewPool(cfg.DBURL)
 	domain.AutoMigrate(pool)
 

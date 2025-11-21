@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"casino.sandboxforge.tech/casino-api/internal/config"
-	"casino.sandboxforge.tech/casino-api/internal/repo"
+	repo "casino.sandboxforge.tech/casino-api/internal/repo/postgres"
 	"github.com/gin-gonic/gin"
 
 	swaggerFiles "github.com/swaggo/files"
