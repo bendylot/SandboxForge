@@ -16,7 +16,7 @@ import (
 	"fmt"
 	"log"
 
-	docs "casino.sandboxforge.tech/casino-api/api/docs"
+	docs "casino.sandboxforge.tech/casino-api/docs"
 	"casino.sandboxforge.tech/casino-api/internal/api"
 	"casino.sandboxforge.tech/casino-api/internal/config"
 	"casino.sandboxforge.tech/casino-api/internal/domain"

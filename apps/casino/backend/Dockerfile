@@ -4,7 +4,7 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 go build -o /api ./api
+RUN CGO_ENABLED=0 go build -o /api .
 
 # run
 FROM gcr.io/distroless/base
