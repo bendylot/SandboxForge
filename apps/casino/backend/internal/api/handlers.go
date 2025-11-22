@@ -35,16 +35,30 @@ func (h *Handlers) Register(c *gin.Context) {
 		return
 	}
 	login := strings.ToLower(strings.TrimSpace(req.Login))
-	if login == "" || len(req.Password) < 2 || len(req.Password) > 24 {
+	if login == "" || len(req.Password) < 4 || len(req.Password) > 24 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "login/password invalid"})
 		return
 	}
-	existing, err := h.Repo.ByLogin(c, login)
+	email := strings.ToLower(strings.TrimSpace(req.Email))
+	if email == "" || len(req.Email) < 4 || len(req.Email) > 24 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "email invalid"})
+		return
+	}
+	existingLogin, err := h.Repo.ByLogin(c, login)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "db error"})
 		return
 	}
-	if existing != nil {
+	if existingLogin != nil {
+		c.JSON(http.StatusConflict, gin.H{"error": "login already registered"})
+		return
+	}
+	existingEmail, err := h.Repo.ByEmail(c, email)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "db error"})
+		return
+	}
+	if existingEmail != nil {
 		c.JSON(http.StatusConflict, gin.H{"error": "email already registered"})
 		return
 	}

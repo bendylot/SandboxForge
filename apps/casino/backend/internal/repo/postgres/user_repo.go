@@ -27,17 +27,17 @@ func (r *UserRepo) Create(ctx context.Context, login, hashed string) (int64, err
 	return id, err
 }
 
-// func (r *UserRepo) ByEmail(ctx context.Context, email string) (*domain.User, error) {
-// 	row := r.DB.QueryRow(ctx, `SELECT id, email, password, created_at FROM users WHERE email=$1`, email)
-// 	var u domain.User
-// 	if err := row.Scan(&u.ID, &u.Email, &u.Password, &u.CreatedAt); err != nil {
-// 		if errors.Is(err, pgx.ErrNoRows) {
-// 			return nil, nil
-// 		}
-// 		return nil, err
-// 	}
-// 	return &u, nil
-// }
+func (r *UserRepo) ByEmail(ctx context.Context, email string) (*domain.User, error) {
+	row := r.DB.QueryRow(ctx, `SELECT id, email, password, created_at FROM users WHERE email=$1`, email)
+	var u domain.User
+	if err := row.Scan(&u.ID, &u.Email, &u.Password, &u.CreatedAt); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return &u, nil
+}
 
 func (r *UserRepo) ByLogin(ctx context.Context, login string) (*domain.User, error) {
 	row := r.DB.QueryRow(ctx, `SELECT id, login, password, created_at FROM users WHERE login=$1`, login)
