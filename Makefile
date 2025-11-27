@@ -8,13 +8,16 @@ down:
 	docker compose -p $(PROJECT) down
 
 api:
-	cd C:\Users\bendylot\source\vscode\SandboxForge\apps\casino\backend
-	swag init
-	cd ..
-	docker compose -f 'compose.yml' up -d --build 'casino-api'
+	cd C:/Users/bendylot/source/vscode/SandboxForge/apps/casino/backend && \
+	swag init && \
+	cd .. && \
+	docker compose -f compose.yml up -d --build casino-api
 
 web:
 	docker compose -p sandboxforge -f apps/frontend/compose.yml up -d
 
 logs:
 	docker compose -p $(PROJECT) logs -f
+dev-backend:
+	cd apps\casino\web\src \
+	npm run dev

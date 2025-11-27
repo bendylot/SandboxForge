@@ -1,16 +1,16 @@
-package api
+package token
 
 import (
 	"net/http"
 	"strings"
 	"time"
 
-	"casino.sandboxforge.tech/casino-api/internal/config"
+	"casino.sandboxforge.tech/casino-api/internal/app/config"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func makeToken(secret string, ttl time.Duration, userID int64, email string) (string, error) {
+func MakeToken(secret string, ttl time.Duration, userID int64, email string) (string, error) {
 	claims := jwt.MapClaims{
 		"sub":   userID,
 		"email": email,
@@ -30,7 +30,7 @@ func AuthMiddleware(cfg *config.Config) gin.HandlerFunc {
 		}
 		tokenStr := strings.TrimSpace(h[7:])
 		token, err := jwt.Parse(tokenStr, func(t *jwt.Token) (interface{}, error) {
-			return []byte(cfg.JWTSecret), nil
+			return []byte(cfg.JWTSecret()), nil
 		})
 		if err != nil || !token.Valid {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "invalid token"})

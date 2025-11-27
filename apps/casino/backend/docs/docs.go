@@ -34,7 +34,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/api.LoginReq"
+                            "$ref": "#/definitions/dto.LoginReq"
                         }
                     }
                 ],
@@ -62,6 +62,7 @@ const docTemplate = `{
         },
         "/api/auth/register": {
             "post": {
+                "description": "Создает пользователя в системе и возвращает JWT",
                 "consumes": [
                     "application/json"
                 ],
@@ -72,15 +73,14 @@ const docTemplate = `{
                     "auth"
                 ],
                 "summary": "Регистрация нового пользователя",
-                "description": "Создает пользователя в системе и возвращает JWT",
                 "parameters": [
                     {
-                        "description": "Логин и пароль",
+                        "description": "Логин, email, пароль",
                         "name": "data",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/api.RegisterReq"
+                            "$ref": "#/definitions/dto.RegisterReq"
                         }
                     }
                 ],
@@ -89,7 +89,7 @@ const docTemplate = `{
                         "description": "Created",
                         "schema": {
                             "type": "object",
-                            "additionalProperties": {}
+                            "additionalProperties": true
                         }
                     },
                     "400": {
@@ -115,6 +115,11 @@ const docTemplate = `{
         },
         "/api/me": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -122,17 +127,12 @@ const docTemplate = `{
                     "users"
                 ],
                 "summary": "Информация о текущем пользователе",
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
                             "type": "object",
-                            "additionalProperties": {}
+                            "additionalProperties": true
                         }
                     },
                     "401": {
@@ -146,32 +146,11 @@ const docTemplate = `{
                     }
                 }
             }
-        },
-        "/healthz": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Healthcheck",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
-                        }
-                    }
-                }
-            }
         }
     },
     "definitions": {
-        "api.LoginReq": {
+        "dto.LoginReq": {
             "type": "object",
-            "required": [
-                "login",
-                "password"
-            ],
             "properties": {
                 "login": {
                     "type": "string"
@@ -181,22 +160,27 @@ const docTemplate = `{
                 }
             }
         },
-        "api.RegisterReq": {
+        "dto.RegisterReq": {
             "type": "object",
             "required": [
+                "email",
                 "login",
                 "password"
             ],
             "properties": {
+                "email": {
+                    "type": "string",
+                    "maxLength": 254
+                },
                 "login": {
                     "type": "string",
-                    "minLength": 2,
-                    "maxLength": 24
+                    "maxLength": 24,
+                    "minLength": 3
                 },
                 "password": {
                     "type": "string",
-                    "minLength": 6,
-                    "maxLength": 24
+                    "maxLength": 128,
+                    "minLength": 8
                 }
             }
         }

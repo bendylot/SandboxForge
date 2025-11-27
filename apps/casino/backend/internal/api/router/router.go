@@ -1,18 +1,20 @@
-package api
+package router
 
 import (
 	"net/http"
 	"time"
 
-	"casino.sandboxforge.tech/casino-api/internal/config"
-	repo "casino.sandboxforge.tech/casino-api/internal/repo/postgres"
+	"casino.sandboxforge.tech/casino-api/internal/api/handlers"
+	"casino.sandboxforge.tech/casino-api/internal/api/token"
+	"casino.sandboxforge.tech/casino-api/internal/app/config"
+	"casino.sandboxforge.tech/casino-api/internal/service"
 	"github.com/gin-gonic/gin"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func NewRouter(cfg *config.Config, ur *repo.UserRepo) *gin.Engine {
+func NewRouter(cfg *config.Config, svc service.Auth) *gin.Engine {
 	r := gin.Default()
 
 	// Простой CORS для локалки
@@ -28,8 +30,7 @@ func NewRouter(cfg *config.Config, ur *repo.UserRepo) *gin.Engine {
 		}
 		c.Next()
 	})
-
-	h := &Handlers{Cfg: cfg, Repo: ur}
+	h := &handlers.Handlers{Cfg: cfg, Svc: svc}
 
 	api := r.Group("/api")
 	{
@@ -40,7 +41,7 @@ func NewRouter(cfg *config.Config, ur *repo.UserRepo) *gin.Engine {
 		}
 
 		protected := api.Group("")
-		protected.Use(AuthMiddleware(cfg))
+		protected.Use(token.AuthMiddleware(cfg))
 		{
 			protected.GET("/me", h.Me)
 		}

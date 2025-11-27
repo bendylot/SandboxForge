@@ -9,198 +9,182 @@
         "contact": {},
         "version": "1.0"
     },
-  "host": "localhost:3001",
-  "basePath": "/",
-  "paths": {
-    "/api/auth/login": {
-      "post": {
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "auth"
-        ],
-        "summary": "Вход пользователя",
-        "parameters": [
-          {
-            "description": "Логин и пароль",
-            "name": "data",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/api.LoginReq"
+    "host": "localhost:3001",
+    "basePath": "/",
+    "paths": {
+        "/api/auth/login": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Вход пользователя",
+                "parameters": [
+                    {
+                        "description": "Логин и пароль",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoginReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "string"
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/auth/register": {
-      "post": {
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "auth"
-        ],
-        "summary": "Регистрация нового пользователя",
-        "description": "Создает пользователя в системе и возвращает JWT",
-        "parameters": [
-          {
-            "description": "Логин и пароль",
-            "name": "data",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/api.RegisterReq"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created",
-            "schema": {
-              "type": "object",
-              "additionalProperties": {}
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "string"
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "schema": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/me": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "users"
-        ],
-        "summary": "Информация о текущем пользователе",
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object",
-              "additionalProperties": {}
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/healthz": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Healthcheck",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object",
-              "additionalProperties": {}
-            }
-          }
-        }
-      }
-    }
-  },
-  "definitions": {
-    "api.LoginReq": {
-      "type": "object",
-      "required": [
-        "login",
-        "password"
-      ],
-      "properties": {
-        "login": {
-          "type": "string"
         },
-        "password": {
-          "type": "string"
-        }
-      }
-    },
-    "api.RegisterReq": {
-      "type": "object",
-      "required": [
-        "login",
-        "password"
-      ],
-      "properties": {
-        "login": {
-          "type": "string",
-          "minLength": 2,
-          "maxLength": 24
+        "/api/auth/register": {
+            "post": {
+                "description": "Создает пользователя в системе и возвращает JWT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Регистрация нового пользователя",
+                "parameters": [
+                    {
+                        "description": "Логин, email, пароль",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RegisterReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
         },
-        "password": {
-          "type": "string",
-          "minLength": 6,
-          "maxLength": 24
+        "/api/me": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Информация о текущем пользователе",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
         }
-      }
-    }
-  },
-  "securityDefinitions": {
-    "BearerAuth": {
-      "type": "apiKey",
+    },
+    "definitions": {
+        "dto.LoginReq": {
+            "type": "object",
+            "properties": {
+                "login": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.RegisterReq": {
+            "type": "object",
+            "required": [
+                "email",
+                "login",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "maxLength": 254
+                },
+                "login": {
+                    "type": "string",
+                    "maxLength": 24,
+                    "minLength": 3
+                },
+                "password": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "minLength": 8
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
             "name": "Authorization",
             "in": "header"
         }

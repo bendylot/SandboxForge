@@ -12,9 +12,17 @@ import (
 type Config struct {
 	AppPort   string
 	DBURL     string
-	JWTSecret string
-	JWTTTL    time.Duration
+	jWTSecret string
+	jWTTTL    time.Duration
 	JWT       string
+}
+
+func (c *Config) JWTSecret() string {
+    return c.jWTSecret // см. заметку ниже о совпадении имён
+}
+
+func (c *Config) JWTTTL() time.Duration {
+    return c.jWTTTL
 }
 
 func Load() *Config {
@@ -32,8 +40,8 @@ func Load() *Config {
 	return &Config{
 		AppPort:   port,
 		DBURL:     db,
-		JWTSecret: secret,
-		JWTTTL:    time.Duration(ttlInt) * time.Minute,
+		jWTSecret: secret,
+		jWTTTL:    time.Duration(ttlInt) * time.Minute,
 	}
 }
 

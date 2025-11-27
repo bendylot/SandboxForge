@@ -16,11 +16,11 @@ import (
 	"fmt"
 	"log"
 
-	docs "casino.sandboxforge.tech/casino-api/docs"
-	"casino.sandboxforge.tech/casino-api/internal/api"
-	"casino.sandboxforge.tech/casino-api/internal/config"
-	"casino.sandboxforge.tech/casino-api/internal/domain"
-	repo "casino.sandboxforge.tech/casino-api/internal/repo/postgres"
+	"casino.sandboxforge.tech/casino-api/docs"
+	"casino.sandboxforge.tech/casino-api/internal/api/router"
+	"casino.sandboxforge.tech/casino-api/internal/app/config"
+	"casino.sandboxforge.tech/casino-api/internal/repo/postgres"
+	"casino.sandboxforge.tech/casino-api/internal/service"
 )
 
 func main() {
@@ -28,13 +28,14 @@ func main() {
 	docs.SwaggerInfo.Host = fmt.Sprintf("localhost:%s", cfg.AppPort)
 	docs.SwaggerInfo.BasePath = "/"
 
-	pool := domain.NewPool(cfg.DBURL)
-	domain.AutoMigrate(pool)
+	pool := postgres.NewPool(cfg.DBURL)
+	postgres.AutoMigrate(pool)
 
-	userRepo := repo.NewUserRepo(pool)
-	router := api.NewRouter(cfg, userRepo)
+	userRepo := postgres.NewUserRepo(pool)
+	authSrc := service.NewAuthService(userRepo, cfg)
+	router := router.NewRouter(cfg, authSrc)
 
-	addr := fmt.Sprintf(":%s", cfg.AppPort)
+	addr := ":" + cfg.AppPort
 	log.Printf("API listening on %s", addr)
 	if err := router.Run(addr); err != nil {
 		log.Fatal(err)

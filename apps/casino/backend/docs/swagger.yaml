@@ -1,4 +1,30 @@
 basePath: /
+definitions:
+  dto.LoginReq:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    type: object
+  dto.RegisterReq:
+    properties:
+      email:
+        maxLength: 254
+        type: string
+      login:
+        maxLength: 24
+        minLength: 3
+        type: string
+      password:
+        maxLength: 128
+        minLength: 8
+        type: string
+    required:
+    - email
+    - login
+    - password
+    type: object
 host: localhost:3001
 info:
   contact: {}
@@ -16,7 +42,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/api.LoginReq'
+          $ref: '#/definitions/dto.LoginReq'
       produces:
       - application/json
       responses:
@@ -41,19 +67,19 @@ paths:
       - application/json
       description: Создает пользователя в системе и возвращает JWT
       parameters:
-      - description: Логин и пароль
+      - description: Логин, email, пароль
         in: body
         name: data
         required: true
         schema:
-          $ref: '#/definitions/api.RegisterReq'
+          $ref: '#/definitions/dto.RegisterReq'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            additionalProperties: {}
+            additionalProperties: true
             type: object
         "400":
           description: Bad Request
@@ -78,7 +104,7 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties: {}
+            additionalProperties: true
             type: object
         "401":
           description: Unauthorized
@@ -91,42 +117,6 @@ paths:
       summary: Информация о текущем пользователе
       tags:
       - users
-  /healthz:
-    get:
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            additionalProperties: {}
-            type: object
-      summary: Healthcheck
-definitions:
-  api.LoginReq:
-    properties:
-      login:
-        type: string
-      password:
-        type: string
-    required:
-    - login
-    - password
-    type: object
-  api.RegisterReq:
-    properties:
-      login:
-        maxLength: 24
-        minLength: 2
-        type: string
-      password:
-        maxLength: 24
-        minLength: 6
-        type: string
-    required:
-    - login
-    - password
-    type: object
 schemes:
 - http
 securityDefinitions:
