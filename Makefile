@@ -8,7 +8,10 @@ down:
 	docker compose -p $(PROJECT) down
 
 api:
-	docker compose -p $(PROJECT) -f apps/backend/compose.yml --profile db --profile api up -d
+	cd C:\Users\bendylot\source\vscode\SandboxForge\apps\casino\backend
+	swag init
+	cd ..
+	docker compose -f 'compose.yml' up -d --build 'casino-api'
 
 web:
 	docker compose -p sandboxforge -f apps/frontend/compose.yml up -d
